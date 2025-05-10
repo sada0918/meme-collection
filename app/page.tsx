@@ -27,12 +27,9 @@ export default function Home() {
         </p>
       </header>
 
-      <main className="max-w-3xl mx-auto grid grid-cols-1 gap-8 bg-white rounded-2xl shadow-lg p-4 hover:shadow-2xl transition">
+      <main className="max-w-3xl mx-auto grid grid-cols-1 gap-8">
         {tweetIds.map((id, index) => (
-          <div key={index}>
-            {/* react-tweetコンポーネント - シンプルなAPIでツイートを表示 */}
-            <Tweet id={id} />
-          </div>
+          <TweetCard key={`tweet-${id}-${index}`} id={id} />
         ))}
       </main>
 
