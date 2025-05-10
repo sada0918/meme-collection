@@ -150,7 +150,7 @@ export default function Home() {
           </p>
 
           {/* 洗練されたタブ型テーマスイッチ */}
-          <div className="inline-block mb-8">
+          <div className="inline-block">
             <div
               className={`p-1 rounded-full ${
                 theme === "dark" ? "bg-gray-800" : "bg-gray-200"
