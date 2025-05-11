@@ -13,12 +13,11 @@ export default function Home() {
 
   // 例のツイート一覧
   const tweets = [
-    "https://x.com/Unknown392Z/status/1917513692163498304",
-    "https://x.com/minna_followjp/status/1920783669263786213",
-    // 必要に応じて追加
+    "1917513692163498304",
+    "1920783669263786213",
+    "1918823508097786303",
   ];
 
-  // URLからIDを抽出
   const tweetIds = tweets.map((tweet) => extractTweetId(tweet));
 
   // ページのロード完了状態を管理
@@ -146,7 +145,7 @@ export default function Home() {
               theme === "dark" ? "text-gray-300" : "text-gray-600"
             }`}
           >
-            今ネットで話題の画像ミーム派生ツイートを集めました。
+            Xで話題のミームポストをまとめてチェック！
           </p>
 
           {/* 洗練されたタブ型テーマスイッチ */}
@@ -259,7 +258,7 @@ export default function Home() {
 
           {/* ツイート本体コンテンツ - 間隔を短く調整 */}
           <div className="p-4 sm:p-6">
-            <div className="space-y-8">
+            <div className="space-y-2">
               {tweetIds.map((id, index) => (
                 <div
                   key={index}
@@ -313,7 +312,7 @@ export default function Home() {
               theme === "dark" ? "text-gray-600" : "text-gray-400"
             }`}
           >
-            © {new Date().getFullYear()} Meme Collection / 作成者: しょうた
+            © {new Date().getFullYear()} Meme Collection / 作成者: さだ
           </p>
         </footer>
       </div>
