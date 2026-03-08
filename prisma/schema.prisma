@@ -12,3 +12,21 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Category {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  popularYear Int
+  posts Post[]
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId String
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+}
