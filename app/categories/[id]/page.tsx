@@ -1,4 +1,6 @@
+import { notFound } from "next/navigation";
 import prisma from "../../../lib/prisma";
+
 export default async function Page({
   params,
 }: {
@@ -10,27 +12,52 @@ export default async function Page({
   const category = await prisma.category.findUnique({
     where: { id: categoryId },
   });
+  if (category === null) {
+    return notFound();
+  }
+
   const posts = await prisma.post.findMany({
     where: { categoryId: categoryId },
   });
 
-  const embeds = await Promise.all(
+  const embeddedPosts = await Promise.all(
     posts.map(async (post) => {
-      const postCard = await fetch(
-        `https://publish.x.com/oembed?url=https://x.com/i/status/${post.postId}`,
-      );
-      const data = await postCard.json();
-      return data.html;
+      try {
+        const postCard = await fetch(
+          `https://publish.x.com/oembed?url=https://x.com/i/status/${post.postId}`,
+        );
+        if (!postCard.ok) {
+          return;
+        }
+        const data = await postCard.json();
+        return data.html;
+      } catch (error) {
+        console.error(
+          "Error fetching oEmbed data for post",
+          post.postId,
+          ":",
+          error,
+        );
+        return;
+      }
     }),
   );
 
+  if (posts.length === 0) {
+    return <>このカテゴリには投稿がありません。</>;
+  }
+
+  if (embeddedPosts.every((html) => html === undefined)) {
+    return <>このカテゴリの投稿の埋め込みに失敗しました。</>;
+  }
+
   return (
     <div>
-      カテゴリ名: {category?.name ?? "カテゴリが見つかりませんでした"}
+      カテゴリ名: {category.name}
       {posts.map((post, index) => (
         <div
           key={post.id}
-          dangerouslySetInnerHTML={{ __html: embeds[index] }}
+          dangerouslySetInnerHTML={{ __html: embeddedPosts[index] }}
         />
       ))}
     </div>
