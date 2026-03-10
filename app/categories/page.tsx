@@ -1,7 +1,12 @@
 import Link from "next/link";
 import prisma from "../../lib/prisma";
+
 export default async function Page() {
   const categories = await prisma.category.findMany();
+
+  if (categories.length === 0) {
+    return <>カテゴリが見つかりませんでした。</>;
+  }
 
   return (
     <div>
