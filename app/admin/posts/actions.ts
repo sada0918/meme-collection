@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type PostActionState = { error?: string; success?: boolean } | null;
 
@@ -32,5 +33,25 @@ export async function createPost(
     return { success: true };
   } catch {
     return { error: "ポストの追加に失敗しました。" };
+  }
+}
+
+export async function deletePost(
+  _prevState: PostActionState,
+  formData: FormData,
+): Promise<PostActionState> {
+  const session = await auth();
+  if (!session)
+    return { error: "セッションが切れました。再ログインしてください。" };
+
+  const id = Number(formData.get("id"));
+  if (id === 0 || Number.isNaN(id)) return { error: "入力値が不正です。" };
+
+  try {
+    await prisma.post.delete({ where: { id } });
+    revalidatePath("/admin/posts");
+    return { success: true };
+  } catch {
+    return { error: "ポストの削除に失敗しました。" };
   }
 }
