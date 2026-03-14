@@ -31,6 +31,7 @@ export async function createPost(
   try {
     await prisma.post.create({ data: { postId, categoryId } });
     revalidatePath("/admin/posts");
+    revalidatePath(`/categories/${categoryId}`);
     return { success: true };
   } catch {
     return { error: "ポストの追加に失敗しました。" };
@@ -45,12 +46,18 @@ export async function deletePost(
   if (!session)
     return { error: "セッションが切れました。再ログインしてください。" };
 
-  const id = Number(formData.get("id"));
-  if (id === 0 || Number.isNaN(id)) return { error: "入力値が不正です。" };
+  const rawPostId = formData.get("postId") as string;
+  const postId = extractPostId(rawPostId);
+  if (!postId) return { error: "入力値が不正です。" };
+
+  const post = await prisma.post.findUnique({ where: { postId } });
+  if (!post) return { error: "ポストが見つかりませんでした。" };
 
   try {
-    await prisma.post.delete({ where: { id } });
+    await prisma.post.delete({ where: { postId: postId } });
     revalidatePath("/admin/posts");
+    revalidatePath(`/categories/${post.categoryId}`);
+
     return { success: true };
   } catch {
     return { error: "ポストの削除に失敗しました。" };
