@@ -13,6 +13,9 @@ export const config: NextAuthConfig = {
       }
       return false;
     },
+    authorized({ auth }) {
+      return !!auth?.user;
+    },
   },
 };
 
