@@ -22,6 +22,8 @@ export async function createCategory(
 
   try {
     await prisma.category.create({ data: { name, popularYear } });
+    revalidatePath("/admin/categories");
+    revalidatePath("/admin/posts");
     return { success: true };
   } catch {
     return { error: "カテゴリの追加に失敗しました。" };
