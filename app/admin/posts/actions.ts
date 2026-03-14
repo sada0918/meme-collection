@@ -22,8 +22,7 @@ export async function createPost(
   const rawPostId = formData.get("postId") as string;
   const categoryId = Number(formData.get("categoryId"));
 
-  if (!rawPostId || categoryId === 0 || Number.isNaN(categoryId))
-    return { error: "入力値が不正です。" };
+  if (!rawPostId || !categoryId) return { error: "入力値が不正です。" };
 
   const postId = extractPostId(rawPostId);
 
