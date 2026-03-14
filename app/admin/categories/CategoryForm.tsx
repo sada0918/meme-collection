@@ -21,8 +21,13 @@ export default function CategoryForm({
   return (
     <>
       <form action={action}>
-        <input name="name" placeholder="新しいカテゴリ名" />
-        <input name="popularYear" type="number" placeholder="人気の年" />
+        <input name="name" placeholder="新しいカテゴリ名" required />
+        <input
+          name="popularYear"
+          type="number"
+          placeholder="人気の年"
+          required
+        />
         <button type="submit" disabled={isPending}>
           追加
         </button>
@@ -32,7 +37,14 @@ export default function CategoryForm({
       <form
         action={deleteAction}
         onSubmit={(e) => {
-          if (!confirm("本当にこのカテゴリを削除しますか？")) {
+          if (
+            !confirm(
+              "本当にこのカテゴリを削除しますか？(カテゴリに紐づく投稿もすべて削除されます)",
+            )
+          ) {
+            e.preventDefault();
+          }
+          if (!confirm("この操作は取り消せません。続行しますか？")) {
             e.preventDefault();
           }
         }}

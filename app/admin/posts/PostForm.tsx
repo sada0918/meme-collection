@@ -29,7 +29,7 @@ export default function PostForm({ categories }: { categories: Category[] }) {
             </option>
           ))}
         </select>
-        <input name="postId" placeholder="追加するポストIDまたはURL" />
+        <input name="postId" placeholder="追加するポストIDまたはURL" required />
         <button type="submit" disabled={isPending}>
           追加
         </button>
@@ -39,12 +39,15 @@ export default function PostForm({ categories }: { categories: Category[] }) {
       <form
         action={deleteAction}
         onSubmit={(e) => {
-          if (!confirm("本当にこのポストを削除しますか？")) {
+          if (!confirm("このポストを削除しますか？")) {
+            e.preventDefault();
+          }
+          if (!confirm("この操作は取り消せません。続行しますか？")) {
             e.preventDefault();
           }
         }}
       >
-        <input name="postId" placeholder="削除するポストIDまたはURL" />
+        <input name="postId" placeholder="削除するポストIDまたはURL" required />
         <button type="submit" disabled={isDeletePending}>
           削除
         </button>
