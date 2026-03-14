@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export type PostActionState = { error?: string; success?: boolean } | null;
 
@@ -29,8 +30,36 @@ export async function createPost(
 
   try {
     await prisma.post.create({ data: { postId, categoryId } });
+    revalidatePath("/admin/posts");
+    revalidatePath(`/categories/${categoryId}`);
     return { success: true };
   } catch {
     return { error: "ポストの追加に失敗しました。" };
+  }
+}
+
+export async function deletePost(
+  _prevState: PostActionState,
+  formData: FormData,
+): Promise<PostActionState> {
+  const session = await auth();
+  if (!session)
+    return { error: "セッションが切れました。再ログインしてください。" };
+
+  const rawPostId = formData.get("postId") as string;
+  const postId = extractPostId(rawPostId);
+  if (!postId) return { error: "入力値が不正です。" };
+
+  const post = await prisma.post.findUnique({ where: { postId } });
+  if (!post) return { error: "ポストが見つかりませんでした。" };
+
+  try {
+    await prisma.post.delete({ where: { postId: postId } });
+    revalidatePath("/admin/posts");
+    revalidatePath(`/categories/${post.categoryId}`);
+
+    return { success: true };
+  } catch {
+    return { error: "ポストの削除に失敗しました。" };
   }
 }
