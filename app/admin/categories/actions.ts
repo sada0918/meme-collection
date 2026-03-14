@@ -16,7 +16,7 @@ export async function createCategory(
   const name = formData.get("name") as string;
   const popularYear = Number(formData.get("popularYear"));
 
-  if (!name || !name.trim() || popularYear === 0 || Number.isNaN(popularYear))
+  if (!name || !name.trim() || !popularYear)
     return { error: "入力値が不正です。" };
 
   try {
