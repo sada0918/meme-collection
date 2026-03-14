@@ -29,7 +29,14 @@ export default function CategoryForm({
         {state?.error && <p>{state.error}</p>}
         {state?.success && <p>カテゴリが追加されました！</p>}
       </form>
-      <form action={deleteAction}>
+      <form
+        action={deleteAction}
+        onSubmit={(e) => {
+          if (!confirm("本当にこのカテゴリを削除しますか？")) {
+            e.preventDefault();
+          }
+        }}
+      >
         <select name="id">
           <option value="">削除するカテゴリを選択</option>
           {categories.map((category) => (
