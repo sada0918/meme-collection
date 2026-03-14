@@ -14,6 +14,12 @@ npm run build
 # スキーマからDBにテーブルを作成・更新
 npx prisma migrate dev --name {コミットメッセージ}
 
+# マイグレーションの履歴(失敗)を解決済みにする方法（スキーマは更新できているが、履歴上では失敗となってしまった場合に有効）
+npx prisma migrate resolve --applied {マイグレーション名}
+
+# マイグレーションの履歴をロールバックする方法（スキーマは更新に失敗したが、履歴上では成功となってしまった場合に有効）
+npx prisma migrate resolve --rolled-back {マイグレーション名}
+
 # Prisma Clientを生成
 npx prisma generate
 
