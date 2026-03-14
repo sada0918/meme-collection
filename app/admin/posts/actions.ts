@@ -30,6 +30,7 @@ export async function createPost(
 
   try {
     await prisma.post.create({ data: { postId, categoryId } });
+    revalidatePath("/admin/posts");
     return { success: true };
   } catch {
     return { error: "ポストの追加に失敗しました。" };
