@@ -3,8 +3,9 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import type { ActionState } from "@/app/types";
 
-export type PostActionState = { error?: string; success?: boolean } | null;
+export type PostActionState = ActionState;
 
 function extractPostId(input: string): string {
   const match = input.match(/\/status\/(\d+)/);
