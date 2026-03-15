@@ -22,7 +22,7 @@ export default function PostList({
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col items-center gap-4">
       {posts.map((post, index) => {
         const html = embeddedPosts[index];
         if (html === undefined) return null;
