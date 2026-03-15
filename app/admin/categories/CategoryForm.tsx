@@ -28,12 +28,14 @@ export default function CategoryForm({
           placeholder="人気の年"
           required
         />
+        <input name="imageUrl" placeholder="カテゴリ画像URL" />
         <button type="submit" disabled={isPending}>
           追加
         </button>
         {state?.error && <p>{state.error}</p>}
         {state?.success && <p>カテゴリが追加されました！</p>}
       </form>
+
       <form
         action={deleteAction}
         onSubmit={(e) => {

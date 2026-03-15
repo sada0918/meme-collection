@@ -20,8 +20,19 @@ export async function createCategory(
   if (!name || !name.trim() || popularYear === 0 || Number.isNaN(popularYear))
     return { error: "入力値が不正です。" };
 
+  const imageUrl = formData.get("imageUrl") as string | null;
+  if (imageUrl?.trim()) {
+    try {
+      new URL(imageUrl);
+    } catch {
+      return { error: "URLの形式が不正です。" };
+    }
+  }
+
   try {
-    await prisma.category.create({ data: { name, popularYear } });
+    await prisma.category.create({
+      data: { name, popularYear, imageUrl: imageUrl?.trim() ?? null },
+    });
     revalidatePath("/admin/categories");
     revalidatePath("/admin/posts");
     return { success: true };
