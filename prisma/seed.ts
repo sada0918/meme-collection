@@ -18,14 +18,14 @@ async function main() {
 
   const post1 = await prisma.post.create({
     data: {
-      postId: "1",
+      postId: "2032853480541663505",
       categoryId: funnyCategory.id,
     },
   });
 
   const post2 = await prisma.post.create({
     data: {
-      postId: "2",
+      postId: "2032607400755343741",
       categoryId: sadCategory.id,
     },
   });
