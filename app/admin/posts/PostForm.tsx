@@ -2,11 +2,7 @@
 
 import { useActionState } from "react";
 import { createPost, deletePost, PostActionState } from "./actions";
-
-type Category = {
-  id: number;
-  name: string;
-};
+import type { Category } from "@/app/types";
 
 export default function PostForm({ categories }: { categories: Category[] }) {
   const [state, action, isPending] = useActionState<PostActionState, FormData>(

@@ -3,8 +3,9 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import type { ActionState } from "@/app/types";
 
-export type CategoryActionState = { error?: string; success?: boolean } | null;
+export type CategoryActionState = ActionState;
 
 export async function createCategory(
   _prevState: CategoryActionState,

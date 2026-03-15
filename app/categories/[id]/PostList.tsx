@@ -1,18 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+import type { Post } from "@/app/types";
 
 export default function PostList({
   posts,
   embeddedPosts,
 }: {
-  posts: {
-    id: number;
-    createdAt: Date;
-    updatedAt: Date;
-    postId: string;
-    categoryId: number;
-  }[];
+  posts: Post[];
   embeddedPosts: (string | undefined)[];
 }) {
   useEffect(() => {
