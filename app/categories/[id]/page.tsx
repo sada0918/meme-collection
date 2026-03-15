@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import prisma from "../../../lib/prisma";
 import PostList from "./PostList";
 import { Suspense } from "react";
+import { Separator } from "@/components/ui/separator";
 
 type OEmbedResponse = {
   html: string;
@@ -59,7 +60,8 @@ export default async function Page({
 
   return (
     <div>
-      カテゴリ名: {category.name}
+      <h1 className="text-2xl font-bold">{category.name}</h1>
+      <Separator className="my-4" />
       {/* TODO fallback対応 */}
       <Suspense fallback={null}>
         <PostList posts={posts} embeddedPosts={embeddedPosts} />
