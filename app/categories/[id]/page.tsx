@@ -1,5 +1,11 @@
 import { notFound } from "next/navigation";
 import prisma from "../../../lib/prisma";
+import PostList from "./PostList";
+import { Suspense } from "react";
+
+type OEmbedResponse = {
+  html: string;
+};
 
 export default async function Page({
   params,
@@ -29,7 +35,7 @@ export default async function Page({
         if (!postCard.ok) {
           return;
         }
-        const data = await postCard.json();
+        const data = (await postCard.json()) as OEmbedResponse;
         return data.html;
       } catch (error) {
         console.error(
@@ -54,12 +60,10 @@ export default async function Page({
   return (
     <div>
       カテゴリ名: {category.name}
-      {posts.map((post, index) => (
-        <div
-          key={post.id}
-          dangerouslySetInnerHTML={{ __html: embeddedPosts[index] }}
-        />
-      ))}
+      {/* TODO fallback対応 */}
+      <Suspense fallback={null}>
+        <PostList posts={posts} embeddedPosts={embeddedPosts} />
+      </Suspense>
     </div>
   );
 }
