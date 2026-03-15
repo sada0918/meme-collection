@@ -2,7 +2,9 @@ import prisma from "@/lib/prisma";
 import CategoryForm from "./CategoryForm";
 
 export default async function Page() {
-  const categories = await prisma.category.findMany();
+  const categories = await prisma.category.findMany({
+    orderBy: { popularYear: "desc" },
+  });
   return (
     <div>
       <h1>カテゴリ管理ページ</h1>
