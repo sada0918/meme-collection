@@ -22,7 +22,7 @@ export default function ErrorPage({
           () => reset()
         }
       >
-        再試行
+        再試行する
       </button>
     </div>
   );
