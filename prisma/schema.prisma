@@ -19,6 +19,7 @@ model Category {
   updatedAt DateTime @updatedAt
   name String @unique
   popularYear Int
+  imageUrl String?
   posts Post[]
 }
 
