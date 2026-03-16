@@ -5,9 +5,14 @@ import { createPost, deletePost, PostActionState } from "./actions";
 import type { Category } from "@/app/types";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const inputClass =
-  "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function PostForm({ categories }: { categories: Category[] }) {
   const [state, action, isPending] = useActionState<PostActionState, FormData>(
@@ -27,21 +32,31 @@ export default function PostForm({ categories }: { categories: Category[] }) {
         </CardHeader>
         <CardContent>
           <form action={action} className="space-y-3">
-            <select name="categoryId" className={inputClass}>
-              <option value="">カテゴリを選択</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <input name="postId" placeholder="追加するポストIDまたはURL" required className={inputClass} />
+            <Select name="categoryId">
+              <SelectTrigger>
+                <SelectValue placeholder="カテゴリを選択" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={String(category.id)}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Input name="postId" placeholder="追加するポストIDまたはURL" required />
             <div className="flex items-center gap-3">
               <Button type="submit" disabled={isPending}>
                 追加
               </Button>
-              {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
-              {state?.success && <p className="text-sm text-muted-foreground">ポストが追加されました</p>}
+              {state?.error && (
+                <p className="text-sm text-destructive">{state.error}</p>
+              )}
+              {state?.success && (
+                <p className="text-sm text-muted-foreground">
+                  ポストが追加されました
+                </p>
+              )}
             </div>
           </form>
         </CardContent>
@@ -64,13 +79,19 @@ export default function PostForm({ categories }: { categories: Category[] }) {
               }
             }}
           >
-            <input name="postId" placeholder="削除するポストIDまたはURL" required className={inputClass} />
+            <Input name="postId" placeholder="削除するポストIDまたはURL" required />
             <div className="flex items-center gap-3">
               <Button type="submit" variant="destructive" disabled={isDeletePending}>
                 削除
               </Button>
-              {deleteState?.error && <p className="text-sm text-destructive">{deleteState.error}</p>}
-              {deleteState?.success && <p className="text-sm text-muted-foreground">ポストが削除されました</p>}
+              {deleteState?.error && (
+                <p className="text-sm text-destructive">{deleteState.error}</p>
+              )}
+              {deleteState?.success && (
+                <p className="text-sm text-muted-foreground">
+                  ポストが削除されました
+                </p>
+              )}
             </div>
           </form>
         </CardContent>
