@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "npx prisma generate && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:dev": "DATABASE_URL=$DATABASE_URL_DEV npx prisma db seed",
+    "seed:test": "DATABASE_URL=$DATABASE_URL_TEST npx prisma db seed"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.2",
