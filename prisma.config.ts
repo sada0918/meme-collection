@@ -2,6 +2,7 @@
 // npm install --save-dev prisma dotenv
 import dotenv from "dotenv";
 import { defineConfig } from "prisma/config";
+import { getConnectionString } from "./lib/db";
 
 dotenv.config({ path: ".env.local" });
 
@@ -12,6 +13,6 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    url: getConnectionString(),
   },
 });
